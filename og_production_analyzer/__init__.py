@@ -10,7 +10,7 @@ __author__ = 'James P. Imes'
 __email__ = 'jamesimes@gmail.com'
 __website__ = 'github.com/jamespimes'
 
-from .production_analyzer import ProductionAnalyzer
+from .production_analyzer import ProductionAnalyzer, DataLoader
 from .report_generator import ReportGenerator
 from .report_generator import Style
 from .report_generator import (
