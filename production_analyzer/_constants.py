@@ -1,0 +1,6 @@
+__version__ = '0.1.0'
+__version_date__ = '11/27/2022'
+__author__ = 'James P. Imes'
+__email__ = 'jamesimes@gmail.com'
+__website__ = 'https://github.com/JamesPImes/og_production_analyzer'
+__license__ = 'MIT'
