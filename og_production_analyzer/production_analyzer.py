@@ -61,7 +61,8 @@ class DataLoader:
         """
         Add one or more sheets from a single .xlsx file.
         :param fp: The filepath of the .xlsx file to add.
-        :param ws_names: A list of sheet names to add.
+        :param ws_names: A list of sheet names to add. (Use ```None```
+         to load all.)
         :param header_row: The row number (0-indexed) that contains
          headers in all of the sheets to incorporate.
         :param source_values: (Optional) Specify where this data came
