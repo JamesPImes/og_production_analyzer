@@ -387,7 +387,7 @@ class ProductionAnalyzer:
             prod[self.DAYS_PRODUCING] = prod[self.days_produced_col]
             # Corresponding days NOT producing, will be aggregated by min.
             prod[self.DAYS_NOT_PRODUCING] = prod.apply(
-                lambda row: self.row_num_unproducing_days(row), axis=1)
+                lambda row: self.row_num_nonproducing_days(row), axis=1)
 
         fields, aggfuncs = self.get_relevant_groupby_fields()
         grouped = prod.groupby(self.date_col, as_index=False)
@@ -460,7 +460,7 @@ class ProductionAnalyzer:
         """
         return row[self.days_produced_col] in (0, None)
 
-    def row_num_unproducing_days(self, row) -> int:
+    def row_num_nonproducing_days(self, row) -> int:
         """
         Calculate the number of days in this month that were NOT
         producing (regardless whether shut-in).
