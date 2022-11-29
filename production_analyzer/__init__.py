@@ -5,10 +5,14 @@ A wrapper for pandas DataFrame for checking oil and/or gas production
 records for gaps; and tools for generating reports.
 """
 
-__version__ = '0.0.1'
-__author__ = 'James P. Imes'
-__email__ = 'jamesimes@gmail.com'
-__website__ = 'github.com/jamespimes'
+from ._constants import (
+    __version__,
+    __author__,
+    __email__,
+    __website__,
+    __version_date__,
+    __license__,
+)
 
 from .production_analyzer import ProductionAnalyzer, DataLoader
 from .report_generator import ReportGenerator
