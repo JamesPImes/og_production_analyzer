@@ -1,7 +1,6 @@
 
 import setuptools
 
-
 DESCRIPTION = (
     'A tool for examining monthly oil and/or gas records for gaps in '
     'production.'
@@ -27,7 +26,7 @@ def get_constant(constant):
 
 
 setuptools.setup(
-    name='production_checker',
+    name='production_analyzer',
     version=get_constant('version'),
     packages=setuptools.find_packages(),
     url=get_constant('url'),
@@ -36,6 +35,10 @@ setuptools.setup(
     author_email=get_constant("author_email"),
     DESCRIPTION=DESCRIPTION,
     LONG_DESCRIPTION=LONG_DESCRIPTION,
-    LONG_DESCRIPTION_content_type="text/markdown",
+    LONG_DESCRIPTION_content_type='text/markdown',
+    install_requires=[
+        'pandas',
+        'matplotlib',
+    ],
     include_package_data=True
 )
