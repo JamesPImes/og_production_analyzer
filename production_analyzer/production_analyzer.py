@@ -131,7 +131,12 @@ class DataLoader:
         :return: None.
         """
         for i, fp in enumerate(fps):
-            self.add_csv(fp, source_values[i], source_header)
+            source = None
+            if isinstance(source_values, list):
+                source = source_values[i]
+            elif source_values is not None:
+                source = source_values
+            self.add_csv(fp, source, source_header)
         return None
 
     def add_multiple_xlsx(
@@ -166,7 +171,12 @@ class DataLoader:
         :return: None.
         """
         for i, fp in enumerate(fps):
-            self.add_xlsx(fp, ws_names, header_row, source_values[i], source_header)
+            source = None
+            if isinstance(source_values, list):
+                source = source_values[i]
+            elif source_values is not None:
+                source = source_values
+            self.add_xlsx(fp, ws_names, header_row, source, source_header)
         return None
 
     def add_multiple_dfs(
@@ -187,7 +197,12 @@ class DataLoader:
         :return: None.
         """
         for i, df in enumerate(dfs):
-            df[source_header] = source_values[i]
+            source = None
+            if isinstance(source_values, list):
+                source = source_values[i]
+            elif source_values is not None:
+                source = source_values
+            df[source_header] = source
         self.dfs.extend(dfs)
 
     def output(self) -> pd.DataFrame:
