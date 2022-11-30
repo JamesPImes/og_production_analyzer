@@ -3,22 +3,56 @@
 A Python package for analyzing monthly oil and/or gas production records
 that are provided by various state agencies, such as:
 
-* Colorado : [Colorado Oil and Gas
+* [__Colorado__ Oil and Gas
 Conservation Commission](https://cogcc.state.co.us/#/home)
 
-* North Dakota : [North Dakota Department of Mineral Resources](https://www.dmr.nd.gov/oilgas/)
+* [__North Dakota__ Department of Mineral Resources](https://www.dmr.nd.gov/oilgas/)
 
-* Wyoming : [Wyoming Oil and Gas
+* [__Wyoming__ Oil and Gas
 Conservation Commission](https://wogcc.wyo.gov/)
 
-These agencies typically provide for each well production records for
-each well, typically including many of the following fields:
+(And others.)
 
-* How many BBLs of oil produced each month
-* How many MCF of gas produced each month
-* On how many days the well produced each month
+The production records provided by the state agencies typically include
+the following data for each well:
+
+* Quantity oil produced each month (typically measured in BBLs)
+* Quantity of gas produced each month (typically measured in MCF)
+* On how many days substances were produced from the well during each month
 * The well's "status code" for a given month (e.g., shut-in, producing, etc.)
 
 This package analyzes the records for one or more wells to look for
 periods of time when there is no production in any of the examined wells,
-and/or when the status code for the well(s) is "shut-in".
+and/or when the status code for the well(s) is "shut-in" (i.e. temporarily
+turned off but still capable of producing).
+
+
+
+## Why?
+
+An "oil and gas lease" is a contract between a landowner and oil company
+that lays out the terms for the company to drill wells on the land, the
+royalties they must pay to the landowner, and other terms.
+
+A typical lease is negotiated for a specific period time (e.g., 1 year,
+5 years, whatever gets negotiated) -- __and then indefinitely, for as long
+as oil and/or gas are produced from one or more wells on the leased lands.__
+Without consistent production, the lease will automatically terminate.
+The lease will often specify just how consistent the production must be
+-- commonly allowing up to 90 consecutive days before expiration.
+It might also specify the *quantity* of oil or gas to be produced in order
+to extend the lease indefinitely. If sufficient production resumes soon
+enough, the termination timer is reset to 90 days (or whatever was
+negotiated).
+
+However, it is not always obvious to either party when production has
+ceased and a lease has terminated -- especially when there are many wells
+to check, multiple leases to keep track of, and decades have passed.
+(When a lease termination isn't noticed, the company may need to negotiate
+some sort of resolution or face litigation, if production is resumed late
+or new wells are drilled without a valid lease in place -- and those risks
+and penalties may compound as time goes on.)
+
+This tool quickly analyzes the production records for one or more wells
+to look for any periods of time when there might not be sufficient
+production, during which a lease might have terminated.
