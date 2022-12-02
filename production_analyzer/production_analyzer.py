@@ -33,10 +33,17 @@ class DataLoader:
         self.date_col = date_col
         self.dfs = []
 
-    def add_csv(self, fp, source_value: str = None, source_header='data_source'):
+    def add_csv(
+            self,
+            fp,
+            header_row: int = 0,
+            source_value: str = None,
+            source_header='data_source'):
         """
         Add a .csv file.
         :param fp: The filepath of the .csv file to add.
+        :param header_row: The row number (0-indexed) that contains
+         headers in all of the .csv files to incorporate.
         :param source_value: (Optional) Specify where this data came
          from.
         :param source_header: (Optional) Specify the header for the
@@ -44,7 +51,7 @@ class DataLoader:
          ```source_value``` is specified.)
         :return: None.
         """
-        df = pd.read_csv(fp, parse_dates=[self.date_col])
+        df = pd.read_csv(fp, parse_dates=[self.date_col], header=header_row)
         if source_value is not None:
             df[source_header] = source_value
         self.dfs.append(df)
@@ -116,12 +123,15 @@ class DataLoader:
     def add_multiple_csv(
             self,
             fps: list,
+            header_row: int = 0,
             source_values: list = None,
             source_header='data_source'
     ) -> None:
         """
         Add multiple .csv files.
         :param fps: A list of filepaths to the .csv files to add.
+        :param header_row: The row number (0-indexed) that contains
+         headers in all of the .csv files to incorporate.
         :param source_values: (Optional) A list of strings that specify
          each source of the data. If passed, the list should be equal in
          length to the list of files added, and in the same order.
@@ -136,7 +146,7 @@ class DataLoader:
                 source = source_values[i]
             elif source_values is not None:
                 source = source_values
-            self.add_csv(fp, source, source_header)
+            self.add_csv(fp, header_row, source, source_header)
         return None
 
     def add_multiple_xlsx(
