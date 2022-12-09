@@ -1,0 +1,14 @@
+{
+  "file_exts": [".xls", ".xlsx"],
+  "header_row": 1,
+  "date_col": "First of Month",
+  "oil_prod_col": "Oil Produced",
+  "gas_prod_col": "Gas Produced",
+  "days_produced_col": "Days Produced",
+  "status_col": "Well Status",
+  "shutin_codes": ["SI"],
+  "url": "https://cogcc.state.co.us/",
+  "prod_url_template": "https://cogcc.state.co.us/cogisdb/Facility/Production?api_county_code={0}&api_seq_num={1}",
+  "prod_url_components": ["API county code (3 digits)", "Unique API sequence (5 digits)"],
+  "requires_credentials": false
+}

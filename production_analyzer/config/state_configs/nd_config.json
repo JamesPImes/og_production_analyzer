@@ -1,0 +1,14 @@
+{
+  "file_exts": [".csv"],
+  "header_row": 1,
+  "date_col": "Date",
+  "oil_prod_col": "BBLS Oil",
+  "gas_prod_col": "MCF Prod",
+  "days_produced_col": "Days",
+  "status_col": null,
+  "shutin_codes": null,
+  "url": "https://www.dmr.nd.gov/oilgas/",
+  "prod_url_template": "https://www.dmr.nd.gov/oilgas/feeservices/getwellprod.asp?filenumber={0}",
+  "prod_url_components": ["NDIC file number"],
+  "requires_credentials": true
+}

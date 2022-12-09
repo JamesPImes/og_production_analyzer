@@ -1,0 +1,14 @@
+{
+  "file_exts": [".xls"],
+  "header_row": 1,
+  "date_col": "Month/Year",
+  "oil_prod_col": "OIL BBLS",
+  "gas_prod_col": "GAS MCF",
+  "days_produced_col": "DAYS",
+  "status_col": null,
+  "shutin_codes": null,
+  "url": "http://pipeline.wyo.gov/",
+  "prod_url_template": null,
+  "prod_url_components": null,
+  "requires_credentials": null
+}

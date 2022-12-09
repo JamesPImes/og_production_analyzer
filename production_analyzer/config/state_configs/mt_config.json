@@ -1,0 +1,14 @@
+{
+  "file_exts": [".csv"],
+  "header_row": 2,
+  "date_col": "RptDate",
+  "oil_prod_col": "BBLS_OIL_COND",
+  "gas_prod_col": "MCF_GAS",
+  "days_produced_col": "DAYS_PROD",
+  "status_col": null,
+  "shutin_codes": null,
+  "url": "http://dnrc.mt.gov/divisions/board-of-oil-and-gas-conservation/",
+  "prod_url_template": null,
+  "prod_url_components": null,
+  "requires_credentials": null
+}
