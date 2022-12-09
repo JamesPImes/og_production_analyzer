@@ -65,9 +65,9 @@ North Dakota, and Wyoming (the states where I do most of my consulting).
 
 ```
 from production_analyzer import ProductionAnalyzer
-from production_analyzer import config
+from production_analyzer import config_loader
 
-colorado_cfg = config.load_config_preset(state='CO')
+colorado_cfg = config_loader.load_config_preset(state='CO')
 analyzer = ProductionAnalyzer.from_config(some_dataframe, config=colorado_cfg)
 
 # etc.
