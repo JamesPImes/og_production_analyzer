@@ -19,10 +19,11 @@ from production_analyzer.config import load_config_preset
 SLEEP_SECONDS = 10
 
 
-# Load preset headers, etc. for Colorado records.
+# Load preset headers, etc. for Colorado records.  (This pulls
+# relevant pre-configured data from `config\state_configs\co_config.json`.)
 config = load_config_preset(state='CO')
 
-# Load DataFrames of production data, directly from the COGCC website.
+# Load DataFrames of production data directly from the COGCC website.
 
 data_loader = DataLoader.from_config(config=config)
 html_loader = HTMLLoader.from_config(config=config, auth=None)
@@ -42,14 +43,18 @@ for api_num in api_nums:
     html_fp = data_dir / f"{api_num}_production_data_raw.html"
     csv_fp = data_dir / f"{api_num}_production_data.csv"
 
+    # The template for the production URL was configured in `co_config.json`,
+    # which was loaded into `config` with `load_config_preset()` above.
+    # Note that the relevant URL in Colorado is built from only the second
+    # and third components of each well's API number. (Other states do it
+    # differently, or not at all.)
     url_components = api_num.split('-')
-    # URL is built from the second and third components of API number only.
     url_components.pop(0)
+    # Use those components to get the relevant URL for this well.
     url = html_loader.get_production_url(url_components)
 
-    # Get the raw HTML from the webpage.
     html = html_loader.get_html(url)
-    # Save raw HTML to disk.
+    # Save raw HTML to disk, in case we need it later.
     html_loader.save_html(html, fp=html_fp)
 
     # Extract the production data from the HTML.
@@ -58,7 +63,7 @@ for api_num in api_nums:
         # Add the dataframe to the data loader.
         api_success[api_num] = True
         data_loader.add_dataframe(prod_df, source_value=api_num)
-        # Save this well's production data to csv.
+        # Save this well's production data to csv, in case we need it later.
         html_loader.save_csv(prod_df, fp=csv_fp)
         print('Done. ', end='')
     else:
