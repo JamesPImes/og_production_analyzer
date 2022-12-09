@@ -13,7 +13,9 @@ from ._constants import (
     __version_date__,
     __license__,
 )
-from .production_analyzer import ProductionAnalyzer, DataLoader
+from .production_analyzer import ProductionAnalyzer
+from .data_loader import DataLoader, HTMLLoader
+from .config import load_config_preset, load_config_custom
 from .report_generator import ReportGenerator
 from .report_generator import Style
 from .report_generator import (
