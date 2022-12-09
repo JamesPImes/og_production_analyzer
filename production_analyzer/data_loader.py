@@ -456,6 +456,6 @@ class HTMLLoader:
             return None
         output = matching_dfs[0]
         if len(matching_dfs) > 1:
-            output = pd.concat(matching_dfs)
+            output = pd.concat(matching_dfs, ignore_index=True)
         self.dfs.append(output)
         return output
