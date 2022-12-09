@@ -39,6 +39,8 @@ setuptools.setup(
     install_requires=[
         'pandas',
         'matplotlib',
+        'requests',
+        'lxml',
     ],
     include_package_data=True
 )
