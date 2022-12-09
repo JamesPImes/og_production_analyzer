@@ -3,15 +3,15 @@
 A Python package for analyzing monthly oil and/or gas production records
 that are provided by various state agencies, such as:
 
-* [__Colorado__ Oil and Gas
-Conservation Commission](https://cogcc.state.co.us/#/home)
+* [__Colorado__ Oil and Gas Conservation Commission](https://cogcc.state.co.us/#/home)
+
+* [__Montana__ Board of Oil and Gas Conservation](http://dnrc.mt.gov/divisions/board-of-oil-and-gas-conservation/)
 
 * [__North Dakota__ Department of Mineral Resources](https://www.dmr.nd.gov/oilgas/)
 
-* [__Wyoming__ Oil and Gas
-Conservation Commission](https://wogcc.wyo.gov/)
+* [__Wyoming__ Oil and Gas Conservation Commission](https://wogcc.wyo.gov/)
 
-(And others.)
+(And agencies in other oil/gas-producing states.)
 
 The production records provided by the state agencies typically include
 the following data for each well:
