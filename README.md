@@ -56,3 +56,38 @@ and penalties may compound as time goes on.)
 This tool quickly analyzes the production records for one or more wells
 to look for any periods of time when there might not be sufficient
 production, during which a lease might have terminated.
+
+
+## Note
+
+Currently, there are preset configurations for use in Colorado, Montana,
+North Dakota, and Wyoming (the states where I do most of my consulting).
+
+```
+from production_analyzer import ProductionAnalyzer
+from production_analyzer import config
+
+colorado_cfg = config.load_config_preset(state='CO')
+analyzer = ProductionAnalyzer.from_config(some_dataframe, config=colorado_cfg)
+
+# etc.
+```
+
+But it can also be manually configured for whatever headers, etc. are
+put out by other states:
+
+```
+from production_analyzer import ProductionAnalyzer
+
+analyzer = ProductionAnalyzer(
+    some_dataframe,
+    date_col='First of Month',
+    oil_prod_col='Oil Produced',
+    gas_prod_col='Gas Produced',
+    days_produced_col='Days Produced',
+    status_col='Well Status',
+    shutin_codes=['SI'],
+)
+
+# etc.
+```
