@@ -13,218 +13,6 @@ import matplotlib.pyplot as plt
 from matplotlib.dates import date2num
 
 
-class DataLoader:
-    """
-    Load production data from one or more .csv or .xlsx files, or
-    incorporate any number of existing ```DataFrame```.
-
-    Note: All data sources should have the same headers, etc.
-    """
-    def __init__(self, date_col: str):
-        """
-        Load production data from one or more .csv or .xlsx files, or
-        incorporate any number of existing ```DataFrame```.
-
-        Note: All data sources should have the same headers, etc.
-
-        :param date_col: The header of the date column in all of the
-         data sources that will be added.
-        """
-        self.date_col = date_col
-        self.dfs = []
-
-    def add_csv(
-            self,
-            fp,
-            header_row: int = 0,
-            source_value: str = None,
-            source_header='data_source'):
-        """
-        Add a .csv file.
-        :param fp: The filepath of the .csv file to add.
-        :param header_row: The row number (0-indexed) that contains
-         headers in all of the .csv files to incorporate.
-        :param source_value: (Optional) Specify where this data came
-         from.
-        :param source_header: (Optional) Specify the header for the
-         column to add for specifying the data source. (Only relevant if
-         ```source_value``` is specified.)
-        :return: None.
-        """
-        df = pd.read_csv(fp, parse_dates=[self.date_col], header=header_row)
-        if source_value is not None:
-            df[source_header] = source_value
-        self.dfs.append(df)
-        return None
-
-    def add_xlsx(
-            self,
-            fp,
-            ws_names: list,
-            header_row: int = 0,
-            source_values: list = None,
-            source_header='data_source'
-    ) -> None:
-        """
-        Add one or more sheets from a single .xlsx file.
-        :param fp: The filepath of the .xlsx file to add.
-        :param ws_names: A list of sheet names to add. (Use ```None```
-         to load all.)
-        :param header_row: The row number (0-indexed) that contains
-         headers in all of the sheets to incorporate.
-        :param source_values: (Optional) Specify where this data came
-         from. Pass a list (equal in length to the number of sheets to
-         load) of strings to apply to each; or pass a single string to
-         apply to all.
-        :param source_header: (Optional) Specify the header for the
-         column to add for specifying the data source. (Only relevant if
-         ```source_value``` is specified.)
-        :return: None.
-        """
-        if isinstance(ws_names, str):
-            ws_names = [ws_names]
-        dfs = pd.read_excel(
-            fp,
-            sheet_name=ws_names,
-            header=header_row,
-            parse_dates=[self.date_col])
-        if source_values is None:
-            pass
-        elif isinstance(source_values, str):
-            for i, df in enumerate(dfs.values()):
-                df[source_header] = source_values
-        else:
-            for i, df in enumerate(dfs.values()):
-                df[source_header] = source_values[i]
-        self.dfs.extend(dfs.values())
-        return None
-
-    def add_dataframe(
-            self,
-            df: pd.DataFrame,
-            source_value: str = None,
-            source_header='data_source'
-    ) -> None:
-        """
-        Add an existing ```DataFrame``` of production data.
-        :param df: The ```DataFrame``` to add.
-        :param source_value: (Optional) Specify where this data came
-         from.
-        :param source_header: (Optional) Specify the header for the
-         column to add for specifying the data source. (Only relevant if
-         ```source_value``` is specified.)
-        :return: None.
-        """
-        if source_value is not None:
-            df[source_header] = source_value
-        self.dfs.append(df)
-        return None
-
-    def add_multiple_csv(
-            self,
-            fps: list,
-            header_row: int = 0,
-            source_values: list = None,
-            source_header='data_source'
-    ) -> None:
-        """
-        Add multiple .csv files.
-        :param fps: A list of filepaths to the .csv files to add.
-        :param header_row: The row number (0-indexed) that contains
-         headers in all of the .csv files to incorporate.
-        :param source_values: (Optional) A list of strings that specify
-         each source of the data. If passed, the list should be equal in
-         length to the list of files added, and in the same order.
-        :param source_header: (Optional) Specify the header for the
-         column to add for specifying the data source. (Only relevant if
-         ```source_values``` is specified.)
-        :return: None.
-        """
-        for i, fp in enumerate(fps):
-            source = None
-            if isinstance(source_values, list):
-                source = source_values[i]
-            elif source_values is not None:
-                source = source_values
-            self.add_csv(fp, header_row, source, source_header)
-        return None
-
-    def add_multiple_xlsx(
-            self,
-            fps: list,
-            ws_names: list,
-            header_row: int = 0,
-            source_values: list = None,
-            source_header='data_source'
-    ) -> None:
-        """
-        Add multiple .xlsx files, all with the same sheet names.
-        :param fps: A list of filepaths of the .xlsx files to add.
-        :param ws_names: A list of sheet names to add. (Each sheet name
-         must exist in every .xlsx file. Otherwise, use the
-         ```.add_xlsx()``` method on each file.)
-        :param header_row: The row number (0-indexed) that contains
-         headers in all of the sheets to incorporate.
-        :param source_values: (Optional) A list of strings that specify
-         each source of the data. If passed, the list should be equal in
-         length to the list of files added, and in the same order.
-         (Note: If different data sources are needed for different
-         sheets within each .xlsx file, use the ```.add_xlsx()```
-         method on each file instead.)
-        :param source_values: (Optional) Specify where this data came
-         from. Pass a list (equal in length to the number of sheets to
-         load) of strings to apply to each; or pass a single string to
-         apply to all.
-        :param source_header: (Optional) Specify the header for the
-         column to add for specifying the data source. (Only relevant if
-         ```source_value``` is specified.)
-        :return: None.
-        """
-        for i, fp in enumerate(fps):
-            source = None
-            if isinstance(source_values, list):
-                source = source_values[i]
-            elif source_values is not None:
-                source = source_values
-            self.add_xlsx(fp, ws_names, header_row, source, source_header)
-        return None
-
-    def add_multiple_dfs(
-            self,
-            dfs: list,
-            source_values: list = None,
-            source_header='data_source'
-    ) -> None:
-        """
-        Add multiple existing ```DataFrame``` of production data.
-        :param dfs: A list of ```DataFrame```.
-        :param source_values: (Optional) A list of strings that specify
-         each source of the data. If passed, the list should be equal in
-         length to the list of files added, and in the same order.
-        :param source_header: (Optional) Specify the header for the
-         column to add for specifying the data source. (Only relevant if
-         ```source_values``` is specified.)
-        :return: None.
-        """
-        for i, df in enumerate(dfs):
-            source = None
-            if isinstance(source_values, list):
-                source = source_values[i]
-            elif source_values is not None:
-                source = source_values
-            df[source_header] = source
-        self.dfs.extend(dfs)
-
-    def output(self) -> pd.DataFrame:
-        """
-        Get the concatenated ```DataFrame``` for all data sources that
-        have been loaded so far.
-        :return: A ```DataFrame``` of all data sources, with no grouping
-         and without filling any empty values.
-        """
-        return pd.concat(self.dfs, ignore_index=True)
-
-
 class ProductionAnalyzer:
     """
     Check a DataFrame that contains monthly oil and/or gas production
@@ -284,6 +72,48 @@ class ProductionAnalyzer:
         self.days_produced_col = days_produced_col
         self._standardize_dates()
         self.prod_df = self.group_by_month()
+
+    @classmethod
+    def from_config(
+            cls,
+            df: pd.DataFrame,
+            config: dict,
+            oil_prod_min: int = 0,
+            gas_prod_min: int = 0,
+    ):
+        """
+        Get a new ```ProductionAnalyzer``` from a config dict.
+
+        :param df: A ```DataFrame``` containing monthly oil and/or gas
+         production data, monthly status codes, and/or the number of
+         days of production during each month. (Will not be directly
+         modified by this object.)
+        :param config: A config dict, as loaded by ```config_loader```
+         module.
+        :param oil_prod_min: (Optional) Minimum threshold for oil
+         production (in BBLs). (Default is ```0```, i.e. no minimum.)
+        :param gas_prod_min: (Optional) Minimum threshold for gas
+         production (in MCF). (Default is ```0```, i.e. no minimum.)
+        :return:
+        """
+        relevant_fields = [
+            'date_col',
+            'oil_prod_col',
+            'gas_prod_col',
+            'days_produced_col',
+            'status_col',
+            'shutin_codes'
+        ]
+        kw = {
+            param: val for param, val in config.items()
+            if param in relevant_fields
+        }
+        return cls(
+            df,
+            oil_prod_min=oil_prod_min,
+            gas_prod_min=gas_prod_min,
+            **kw
+        )
 
     @property
     def is_configured_shutin(self):
@@ -674,9 +504,6 @@ class ProductionAnalyzer:
                     days_producing = 0
                     days_not_producing = days_in_month
 
-            # TODO: Figure out 'worst-case' scenario. This will entail
-            #  partial months adding both forward and backward (two
-            #  different scenarios).
             days_counter += days_not_producing
             if days_producing == 0:
                 running_days_vals.append(days_counter)
@@ -997,5 +824,4 @@ def get_days_in_month(dt) -> int:
 
 __all__ = [
     'ProductionAnalyzer',
-    'DataLoader'
 ]
