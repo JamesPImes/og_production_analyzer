@@ -79,15 +79,16 @@ for api_num in api_nums:
         print('No production records. ', end='')
 
     # Be kind to the COGCC's server.
-    print(f"Sleeping {SLEEP_SECONDS} seconds.")
+    print(f"Waiting {SLEEP_SECONDS} seconds.")
     sleep(SLEEP_SECONDS)
-
 
 # Export a single DataFrame with all loaded production data.
 total_prod_df = data_loader.output()
 total_prod_df.to_csv(data_dir / f"combined_data.csv")
+print("All data loaded.")
 
 
+print("Analyzing... ", end="")
 # Now that all the relevant data has been loaded, begin the analysis...
 analyzer = ProductionAnalyzer.from_config(total_prod_df, config)
 
@@ -96,15 +97,16 @@ analyzer.gaps_by_production_threshold(
     shutin_as_producing=False,
     analysis_id=no_shutin_label
 )
-
 yes_shutin_label = 'Gaps in Production (Shut-in DOES count as production)'
 analyzer.gaps_by_production_threshold(
     shutin_as_producing=True,
     analysis_id=yes_shutin_label
 )
+print("Done.")
 
 
 # Generate a text report of our results.
+print("Generating report... ", end="")
 
 # Generate and store individual report sections, in the intended order
 # they should appear in the report.
@@ -145,11 +147,18 @@ report_generator = ReportGenerator(report_sections=report_sections)
 txt = report_generator.generate_report_text()
 # If we want to write the text to a .txt file.
 report_fp = analysis_dir / 'production analysis.txt'
-report_generator.write_report_to_file(report_fp, mode='w')
+report_text = report_generator.write_report_to_file(report_fp, mode='w')
+print("Done.")
 
 
 # Generate a basic graph of total oil production and gas production, and
 # highlighting the gaps in production (using the results in which shut-in
 # did not count as production).
+print("Generating production graph... ", end="")
 graph_fp = analysis_dir / 'gaps_graph.png'
 analyzer.generate_graph(gaps_df=analyzer.results[no_shutin_label], fp=graph_fp)
+print("Done.", end="\n\n")
+
+print(report_text)
+print("Analysis complete.")
+input()
