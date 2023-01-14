@@ -83,4 +83,15 @@ total_prod_df.to_csv(data_dir / f"combined_data.csv")
 # Now that all the relevant data has been loaded, begin the analysis...
 analyzer = ProductionAnalyzer.from_config(total_prod_df, config)
 
-# etc.
+no_shutin_label = 'Gaps in Production (Shut-in does NOT count as production)'
+analyzer.gaps_by_producing_days(
+    shutin_as_producing=False,
+    analysis_id=no_shutin_label
+)
+
+yes_shutin_label = 'Gaps in Production (Shut-in DOES count as production)'
+analyzer.gaps_by_producing_days(
+    shutin_as_producing=True,
+    analysis_id=yes_shutin_label
+)
+
