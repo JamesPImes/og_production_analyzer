@@ -14,6 +14,13 @@ from production_analyzer import (
     DataLoader,
     HTMLLoader
 )
+from production_analyzer.report_generator import (
+    ReportGenerator,
+    TextBlockSection,
+    ProductionDatesSection,
+    DateRangeSection,
+    MaterialsReviewedSection,
+)
 from production_analyzer.config import load_config_preset
 
 SLEEP_SECONDS = 10
@@ -29,7 +36,7 @@ data_loader = DataLoader.from_config(config=config)
 html_loader = HTMLLoader.from_config(config=config, auth=None)
 
 # Where we'll save our data.
-analysis_dir = Path(r"C:\Production_Research")
+analysis_dir = Path(r"./production analysis")
 data_dir = analysis_dir / "production_data"
 os.makedirs(data_dir, exist_ok=True)
 
@@ -95,3 +102,46 @@ analyzer.gaps_by_producing_days(
     analysis_id=yes_shutin_label
 )
 
+
+# Generate a text report of our results.
+
+# Generate and store individual report sections, in the intended order
+# they should appear in the report.
+report_sections = []
+textblock_1 = TextBlockSection(
+    text='A sample report for production analysis.'
+)
+report_sections.append(textblock_1)
+
+# Start / end dates of the records we reviewed.
+records_daterange = ProductionDatesSection(
+    production_df=analyzer.prod_df,
+    date_col=analyzer.date_col,
+    header='For records for the following dates:'
+)
+report_sections.append(records_daterange)
+
+# What records were incorporated into our analysis.
+materials_reviewed = MaterialsReviewedSection(
+    materials=api_nums,
+    header='Considering the following wells:',
+)
+report_sections.append(materials_reviewed)
+
+# The results of each analysis (in this case: production gaps where shut-in was
+# considered producing, and another where it was not considered producing).
+for analysis_id, results_df in analyzer.results.items():
+    date_range_section = DateRangeSection(
+        date_range_df=results_df,
+        header=analysis_id,
+        include_max=True
+    )
+    report_sections.append(date_range_section)
+
+# Use those individual report sections to write the full report.
+report_generator = ReportGenerator(report_sections=report_sections)
+# If we just need the report text as a string.
+txt = report_generator.generate_report_text()
+# If we want to write the text to a .txt file.
+report_fp = analysis_dir / 'production analysis.txt'
+report_generator.write_report_to_file(report_fp, mode='w')
