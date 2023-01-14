@@ -23,7 +23,7 @@ from production_analyzer.report_generator import (
 )
 from production_analyzer.config import load_config_preset
 
-SLEEP_SECONDS = 10
+SLEEP_SECONDS = 2
 
 
 # Load preset headers, etc. for Colorado records.  (This pulls
@@ -36,7 +36,7 @@ data_loader = DataLoader.from_config(config=config)
 html_loader = HTMLLoader.from_config(config=config, auth=None)
 
 # Where we'll save our data.
-analysis_dir = Path(r"./production analysis")
+analysis_dir = Path(r"./sample analysis")
 data_dir = analysis_dir / "production_data"
 os.makedirs(data_dir, exist_ok=True)
 
@@ -46,7 +46,7 @@ api_nums = ['05-001-07727', '05-001-08288', '05-123-08053', '05-123-09456']
 api_success = {}
 
 for api_num in api_nums:
-    print(f"Collecting data records for well: {api_num}... ", end='')
+    print(f"Collecting production records for well: {api_num}... ", end='')
     html_fp = data_dir / f"{api_num}_production_data_raw.html"
     csv_fp = data_dir / f"{api_num}_production_data.csv"
 
@@ -91,13 +91,13 @@ total_prod_df.to_csv(data_dir / f"combined_data.csv")
 analyzer = ProductionAnalyzer.from_config(total_prod_df, config)
 
 no_shutin_label = 'Gaps in Production (Shut-in does NOT count as production)'
-analyzer.gaps_by_producing_days(
+analyzer.gaps_by_production_threshold(
     shutin_as_producing=False,
     analysis_id=no_shutin_label
 )
 
 yes_shutin_label = 'Gaps in Production (Shut-in DOES count as production)'
-analyzer.gaps_by_producing_days(
+analyzer.gaps_by_production_threshold(
     shutin_as_producing=True,
     analysis_id=yes_shutin_label
 )
@@ -145,3 +145,10 @@ txt = report_generator.generate_report_text()
 # If we want to write the text to a .txt file.
 report_fp = analysis_dir / 'production analysis.txt'
 report_generator.write_report_to_file(report_fp, mode='w')
+
+
+# Generate a basic graph of total oil production and gas production, and
+# highlighting the gaps in production (using the results in which shut-in
+# did not count as production).
+graph_fp = analysis_dir / 'gaps_graph.png'
+analyzer.generate_graph(gaps_df=analyzer.results[no_shutin_label], fp=graph_fp)
