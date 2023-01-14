@@ -72,6 +72,7 @@ class ProductionAnalyzer:
         self.days_produced_col = days_produced_col
         self._standardize_dates()
         self.prod_df = self.group_by_month()
+        self.results = {}
 
     @classmethod
     def from_config(
@@ -337,7 +338,8 @@ class ProductionAnalyzer:
             self,
             shutin_as_producing=False,
             new_days_col: str = None,
-            new_months_col: str = None
+            new_months_col: str = None,
+            analysis_id=None,
     ):
         """
         Find gaps in oil/gas production for those months that did not
@@ -363,6 +365,11 @@ class ProductionAnalyzer:
         :param new_months_col: (Optional) The header to add to the
          production ``DataFrame`` at ``.prod_df`` for the running
          months. If not specified, that data will not be added.
+        :param analysis_id: (Optional) An identifier (string, int, etc.)
+         for this analysis. If passed, the results of this analysis (a
+         ``DataFrame``) will be saved to ``.results``, keyed by
+         ``analysis_id``. (Must be a hashable type, and should be
+         unique, or previous results will be overwritten.)
         :return: A ``DataFrame`` showing the ``'total_months'`` and
          ``'total_days'`` in each gap.
         """
@@ -411,14 +418,18 @@ class ProductionAnalyzer:
             df[new_days_col] = running_days_vals
         if new_months_col is not None:
             df[new_months_col] = running_months_vals
-        return self._time_ranges_to_dataframe(gaps)
+        results = self._time_ranges_to_dataframe(gaps)
+        if analysis_id is not None:
+            self.results[analysis_id] = results
+        return results
 
     def gaps_by_producing_days(
             self,
             shutin_as_producing=False,
             consider_production: bool = None,
             new_days_col: str = None,
-            new_months_col: str = None
+            new_months_col: str = None,
+            analysis_id=None,
     ):
         """
         Find gaps in production for those months in which no days of
@@ -467,6 +478,11 @@ class ProductionAnalyzer:
         :param new_months_col: (Optional) The header to add to the
          production ``DataFrame`` at ``.prod_df`` for the running
          months. If not specified, that data will not be added.
+        :param analysis_id: (Optional) An identifier (string, int, etc.)
+         for this analysis. If passed, the results of this analysis (a
+         ``DataFrame``) will be saved to ``.results``, keyed by
+         ``analysis_id``. (Must be a hashable type, and should be
+         unique, or previous results will be overwritten.)
         :return: A ``DataFrame`` showing the ``'total_months'`` and
          ``'total_days'`` in each gap.
         """
@@ -556,13 +572,17 @@ class ProductionAnalyzer:
             df[new_days_col] = running_days_vals
         if new_months_col is not None:
             df[new_months_col] = running_months_vals
-        return self._time_ranges_to_dataframe(gaps)
+        results = self._time_ranges_to_dataframe(gaps)
+        if analysis_id is not None:
+            self.results[analysis_id] = results
+        return results
 
     def periods_of_shutin(
             self,
             consider_production: bool = None,
             new_days_col: str = None,
             new_months_col: str = None,
+            analysis_id=None,
     ):
         """
         Find the periods during which at least one well is explicitly
@@ -589,6 +609,11 @@ class ProductionAnalyzer:
         :param new_months_col: (Optional) The header to add to the
          production ``DataFrame`` at ``.prod_df`` for the running
          months. If not specified, that data will not be added.
+        :param analysis_id: (Optional) An identifier (string, int, etc.)
+         for this analysis. If passed, the results of this analysis (a
+         ``DataFrame``) will be saved to ``.results``, keyed by
+         ``analysis_id``. (Must be a hashable type, and should be
+         unique, or previous results will be overwritten.)
         :return: A ``DataFrame`` showing the ``'total_months'`` and
          ``'total_days'`` in each shut-in time period.
         """
@@ -639,7 +664,10 @@ class ProductionAnalyzer:
             df[new_days_col] = running_days_vals
         if new_months_col is not None:
             df[new_months_col] = running_months_vals
-        return self._time_ranges_to_dataframe(periods)
+        results = self._time_ranges_to_dataframe(periods)
+        if analysis_id is not None:
+            self.results[analysis_id] = results
+        return results
 
     @staticmethod
     def _time_ranges_to_dataframe(time_ranges: list) -> pd.DataFrame:
