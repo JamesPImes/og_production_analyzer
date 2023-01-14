@@ -2,7 +2,8 @@
 """
 A sample script for loading production data directly from the website
 of the state reporting agency -- in this case, for Colorado (i.e. from
-the COGCC's online records).
+the COGCC's online records) -- then analyzing that data, and generating
+a sample report and graph.
 """
 
 import os
