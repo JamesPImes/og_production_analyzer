@@ -1,7 +1,7 @@
 
 """
 Helper classes for loading production data from various sources (.csv,
-.xlsx, existing ```DataFrame``` objects, and directly from websites).
+.xlsx, existing ``DataFrame`` objects, and directly from websites).
 """
 
 import os
@@ -14,7 +14,7 @@ import requests
 class DataLoader:
     """
     Load production data from one or more .csv or .xlsx files, or
-    incorporate any number of existing ```DataFrame```.
+    incorporate any number of existing ``DataFrame``.
 
     Note: All data sources should have the same headers, etc.
     """
@@ -28,7 +28,7 @@ class DataLoader:
     ):
         """
         Load production data from one or more .csv or .xlsx files, or
-        incorporate any number of existing ```DataFrame```.
+        incorporate any number of existing ``DataFrame``.
 
         Note: All data sources should have the same headers, etc.
 
@@ -46,11 +46,11 @@ class DataLoader:
     @classmethod
     def from_config(cls, config):
         """
-        Get a new ```DataLoader``` from a config dict.
+        Get a new ``DataLoader`` from a config dict.
 
-        :param config: A config dict, as loaded by ```config_loader```
+        :param config: A config dict, as loaded by ``config_loader``
          module.
-        :return: A new ```DataLoader``` that incorporates the config
+        :return: A new ``DataLoader`` that incorporates the config
          data.
         """
         relevant_fields = [
@@ -70,7 +70,7 @@ class DataLoader:
     def configured_columns(self):
         """
         Get a list of column headers that have been configured for this
-        ```DataLoader```.
+        ``DataLoader``.
         """
         possible = [
             self.date_col,
@@ -96,7 +96,7 @@ class DataLoader:
          from.
         :param source_header: (Optional) Specify the header for the
          column to add for specifying the data source. (Only relevant if
-         ```source_value``` is specified.)
+         ``source_value`` is specified.)
         :return: None.
         """
         df = pd.read_csv(fp, parse_dates=[self.date_col], header=header_row)
@@ -116,7 +116,7 @@ class DataLoader:
         """
         Add one or more sheets from a single .xlsx file.
         :param fp: The filepath of the .xlsx file to add.
-        :param ws_names: A list of sheet names to add. (Use ```None```
+        :param ws_names: A list of sheet names to add. (Use ``None``
          to load all.)
         :param header_row: The row number (0-indexed) that contains
          headers in all of the sheets to incorporate.
@@ -126,7 +126,7 @@ class DataLoader:
          apply to all.
         :param source_header: (Optional) Specify the header for the
          column to add for specifying the data source. (Only relevant if
-         ```source_value``` is specified.)
+         ``source_value`` is specified.)
         :return: None.
         """
         if isinstance(ws_names, str):
@@ -154,13 +154,13 @@ class DataLoader:
             source_header='data_source'
     ) -> None:
         """
-        Add an existing ```DataFrame``` of production data.
-        :param df: The ```DataFrame``` to add.
+        Add an existing ``DataFrame`` of production data.
+        :param df: The ``DataFrame`` to add.
         :param source_value: (Optional) Specify where this data came
          from.
         :param source_header: (Optional) Specify the header for the
          column to add for specifying the data source. (Only relevant if
-         ```source_value``` is specified.)
+         ``source_value`` is specified.)
         :return: None.
         """
         if source_value is not None:
@@ -185,7 +185,7 @@ class DataLoader:
          length to the list of files added, and in the same order.
         :param source_header: (Optional) Specify the header for the
          column to add for specifying the data source. (Only relevant if
-         ```source_values``` is specified.)
+         ``source_values`` is specified.)
         :return: None.
         """
         for i, fp in enumerate(fps):
@@ -210,14 +210,14 @@ class DataLoader:
         :param fps: A list of filepaths of the .xlsx files to add.
         :param ws_names: A list of sheet names to add. (Each sheet name
          must exist in every .xlsx file. Otherwise, use the
-         ```.add_xlsx()``` method on each file.)
+         ``.add_xlsx()`` method on each file.)
         :param header_row: The row number (0-indexed) that contains
          headers in all of the sheets to incorporate.
         :param source_values: (Optional) A list of strings that specify
          each source of the data. If passed, the list should be equal in
          length to the list of files added, and in the same order.
          (Note: If different data sources are needed for different
-         sheets within each .xlsx file, use the ```.add_xlsx()```
+         sheets within each .xlsx file, use the ``.add_xlsx()``
          method on each file instead.)
         :param source_values: (Optional) Specify where this data came
          from. Pass a list (equal in length to the number of sheets to
@@ -225,7 +225,7 @@ class DataLoader:
          apply to all.
         :param source_header: (Optional) Specify the header for the
          column to add for specifying the data source. (Only relevant if
-         ```source_value``` is specified.)
+         ``source_value`` is specified.)
         :return: None.
         """
         for i, fp in enumerate(fps):
@@ -244,14 +244,14 @@ class DataLoader:
             source_header='data_source'
     ) -> None:
         """
-        Add multiple existing ```DataFrame``` of production data.
-        :param dfs: A list of ```DataFrame```.
+        Add multiple existing ``DataFrame`` of production data.
+        :param dfs: A list of ``DataFrame``.
         :param source_values: (Optional) A list of strings that specify
          each source of the data. If passed, the list should be equal in
          length to the list of files added, and in the same order.
         :param source_header: (Optional) Specify the header for the
          column to add for specifying the data source. (Only relevant if
-         ```source_values``` is specified.)
+         ``source_values`` is specified.)
         :return: None.
         """
         for i, df in enumerate(dfs):
@@ -265,11 +265,11 @@ class DataLoader:
 
     def output(self, empty_as_error=False) -> pd.DataFrame:
         """
-        Get the concatenated ```DataFrame``` for all data sources that
+        Get the concatenated ``DataFrame`` for all data sources that
         have been loaded so far.
-        :param empty_as_error: (Optional) Specify ```True``` to raise
-         a ```ValueError``` if no data has been successfully loaded.
-        :return: A ```DataFrame``` of all data sources, with no grouping
+        :param empty_as_error: (Optional) Specify ``True`` to raise
+         a ``ValueError`` if no data has been successfully loaded.
+        :return: A ``DataFrame`` of all data sources, with no grouping
          and without filling any empty values.
         """
         if self.dfs:
@@ -301,32 +301,32 @@ class HTMLLoader:
         tabular monthly production data in HTML.
 
         The URL template should have formatting brackets
-        ```prod_url_template``` should be a string to the URL for the
+        ``prod_url_template`` should be a string to the URL for the
         production records, with formatting brackets for the portion
         that will be filled in with meaningful data for each unique
         well.
 
         For example, Colorado uses a URL schema as follows:
-            ```"https://cogcc.state.co.us/cogisdb/Facility/Production?api_county_code={0}&api_seq_num={1}"```
+            ``"https://cogcc.state.co.us/cogisdb/Facility/Production?api_county_code={0}&api_seq_num={1}"``
 
         ... which uses portions of the API number for a given well
-        (unique to each well) -- e.g., ```'05-001-12345'```.  In this,
-        ```'001'``` encodes the county, and ```'12345'``` is a unique
+        (unique to each well) -- e.g., ``'05-001-12345'``.  In this,
+        ``'001'`` encodes the county, and ``'12345'`` is a unique
         sequence for a specific well within that county.  These are
-        plugged into ```{0}``` and ```{1}``` within an f-string, to
+        plugged into ``{0}`` and ``{1}`` within an f-string, to
         generate the following URL:
-          ```"https://cogcc.state.co.us/cogisdb/Facility/Production?api_county_code=001&api_seq_num=12345"```
+          ``"https://cogcc.state.co.us/cogisdb/Facility/Production?api_county_code=001&api_seq_num=12345"``
 
         On the other hand, North Dakota uses a URL schema as follows:
-          ```https://www.dmr.nd.gov/oilgas/feeservices/getwellprod.asp?filenumber={0}```
+          ``https://www.dmr.nd.gov/oilgas/feeservices/getwellprod.asp?filenumber={0}``
 
-        ... where ```{0}``` would be filled with a unique, incrementing
+        ... where ``{0}`` would be filled with a unique, incrementing
         5-digit number that gets assigned to wells by the State of North
         Dakota itself.
 
         :param prod_url_template: The template for the URL to the page
          that will contain the data to scrape. (See above.)
-        :param date_col: The column header for the ```datetime``` that
+        :param date_col: The column header for the ``datetime`` that
          represents its entire month (e.g., 1/1/2011 for January 2011).
         :param oil_prod_col: (Optional) The header for oil production.
         :param gas_prod_col: (Optional) The header for gas production.
@@ -335,8 +335,8 @@ class HTMLLoader:
         :param status_col: (Optional) The header for the column
          containing status codes.
         :param auth: (Optional) If needed, provide the appropriate
-         ```requests.auth``` object for this state's website, such as:
-         ```requests.auth.HTTPBasicAuth('user_name', 'password')```.
+         ``requests.auth`` object for this state's website, such as:
+         ``requests.auth.HTTPBasicAuth('user_name', 'password')``.
         """
         self.prod_url_template = prod_url_template
         self.date_col = date_col
@@ -351,14 +351,14 @@ class HTMLLoader:
     @classmethod
     def from_config(cls, config: dict, auth=None):
         """
-        Get a new ```HTMLLoader``` from a config dict.
+        Get a new ``HTMLLoader`` from a config dict.
 
-        :param config: A config dict, as loaded by ```config_loader```
+        :param config: A config dict, as loaded by ``config_loader``
          module.
         :param auth: (Optional) If needed, provide the appropriate
-         ```requests.auth``` object for this state, such as:
-         ```requests.auth.HTTPBasicAuth('user_name', 'password')```.
-        :return: A new ```HTMLLoader``` that incorporates the config
+         ``requests.auth`` object for this state, such as:
+         ``requests.auth.HTTPBasicAuth('user_name', 'password')``.
+        :return: A new ``HTMLLoader`` that incorporates the config
          data.
         """
         relevant_fields = [
@@ -379,7 +379,7 @@ class HTMLLoader:
     def configured_columns(self):
         """
         Get a list of column headers that have been configured for this
-        ```HTMLLoader```.
+        ``HTMLLoader``.
         """
         possible = [
             self.date_col,
@@ -392,8 +392,8 @@ class HTMLLoader:
 
     def reset(self) -> None:
         """
-        Reset the list of ```DataFrame``` objects in ```.dfs``` and the
-        list of filepaths in ```.files_saved``` to new, empty lists.
+        Reset the list of ``DataFrame`` objects in ``.dfs`` and the
+        list of filepaths in ``.files_saved`` to new, empty lists.
         :return: None
         """
         self.dfs = []
@@ -411,7 +411,7 @@ class HTMLLoader:
 
     def save_html(self, txt, fp):
         """
-        Save the HTML to the specified filename (if ```.save_html_dir```
+        Save the HTML to the specified filename (if ``.save_html_dir``
         has been configured).
         """
         fp = Path(fp)
@@ -423,7 +423,7 @@ class HTMLLoader:
 
     def save_csv(self, df, fp) -> None:
         """
-        Save the production ```DataFrame``` to .csv.
+        Save the production ``DataFrame`` to .csv.
         """
         fp = Path(fp)
         os.makedirs(fp.parent, exist_ok=True)
@@ -450,12 +450,12 @@ class HTMLLoader:
     def get_production_data_from_html(self, html):
         """
         Extract the production table(s) found in the provided HTML text
-        to a single ```DataFrame```. If not found return ```None```.
+        to a single ``DataFrame``. If not found return ``None``.
 
         :param html: The raw text of the HTML from which to pull
          production data table(s).
-        :return: The production ```DataFrame```, if found. If not found,
-         then ```None```.
+        :return: The production ``DataFrame``, if found. If not found,
+         then ``None``.
         """
         matching_dfs = []
         target_cols = set(self.configured_columns)

@@ -1,7 +1,7 @@
 # Copyright (c) 2021-2022, James P. Imes. All rights reserved.
 
 """
-A wrapper for ```pandas``` for checking oil and/or gas production
+A wrapper for ``pandas`` for checking oil and/or gas production
 records for gaps.
 """
 
@@ -40,11 +40,11 @@ class ProductionAnalyzer:
             gas_prod_min: int = 0,
     ):
         """
-        :param df: A ```DataFrame``` containing monthly oil and/or gas
+        :param df: A ``DataFrame`` containing monthly oil and/or gas
          production data, monthly status codes, and/or the number of
          days of production during each month. (Will not be directly
          modified by this object.)
-        :param date_col: The column header for the ```datetime``` that
+        :param date_col: The column header for the ``datetime`` that
          represents its entire month (e.g., 1/1/2011 for January 2011).
         :param oil_prod_col: (Optional) The header for oil production.
         :param gas_prod_col: (Optional) The header for gas production.
@@ -55,9 +55,9 @@ class ProductionAnalyzer:
         :param shutin_codes: (Optional) A list of case-sensitive status
          codes that can be considered shut-in.
         :param oil_prod_min: (Optional) Minimum threshold for oil
-         production (in BBLs). (Default is ```0```, i.e. no minimum.)
+         production (in BBLs). (Default is ``0``, i.e. no minimum.)
         :param gas_prod_min: (Optional) Minimum threshold for gas
-         production (in MCF). (Default is ```0```, i.e. no minimum.)
+         production (in MCF). (Default is ``0``, i.e. no minimum.)
         """
         self.df = df.copy(deep=True)
         self.date_col = date_col
@@ -82,18 +82,18 @@ class ProductionAnalyzer:
             gas_prod_min: int = 0,
     ):
         """
-        Get a new ```ProductionAnalyzer``` from a config dict.
+        Get a new ``ProductionAnalyzer`` from a config dict.
 
-        :param df: A ```DataFrame``` containing monthly oil and/or gas
+        :param df: A ``DataFrame`` containing monthly oil and/or gas
          production data, monthly status codes, and/or the number of
          days of production during each month. (Will not be directly
          modified by this object.)
-        :param config: A config dict, as loaded by ```config_loader```
+        :param config: A config dict, as loaded by ``config_loader``
          module.
         :param oil_prod_min: (Optional) Minimum threshold for oil
-         production (in BBLs). (Default is ```0```, i.e. no minimum.)
+         production (in BBLs). (Default is ``0``, i.e. no minimum.)
         :param gas_prod_min: (Optional) Minimum threshold for gas
-         production (in MCF). (Default is ```0```, i.e. no minimum.)
+         production (in MCF). (Default is ``0``, i.e. no minimum.)
         :return:
         """
         relevant_fields = [
@@ -118,7 +118,7 @@ class ProductionAnalyzer:
     @property
     def is_configured_shutin(self):
         """
-        Is this ```ProductionAnalyzer``` configured to check for
+        Is this ``ProductionAnalyzer`` configured to check for
         shut-in?
         """
         return self.shutin_codes is not None and self.status_col is not None
@@ -126,7 +126,7 @@ class ProductionAnalyzer:
     @property
     def is_configured_production(self):
         """
-        Is this ```ProductionAnalyzer``` configured to check for
+        Is this ``ProductionAnalyzer`` configured to check for
         production?
         """
         return self.oil_prod_col is not None or self.gas_prod_col is not None
@@ -134,7 +134,7 @@ class ProductionAnalyzer:
     @property
     def is_configured_days_produced(self):
         """
-        Is this ```ProductionAnalyzer``` configured to check for the
+        Is this ``ProductionAnalyzer`` configured to check for the
         number of days produced each month?
         """
         return self.days_produced_col is not None
@@ -150,25 +150,25 @@ class ProductionAnalyzer:
 
     @property
     def first_month(self):
-        """Get the first day of the first month as a ```datetime```."""
+        """Get the first day of the first month as a ``datetime``."""
         first = self.df[self.date_col].min()
         return first_day_of_month(first)
 
     @property
     def last_month(self):
-        """Get the first day of the last month as a ```datetime```."""
+        """Get the first day of the last month as a ``datetime``."""
         last = self.df[self.date_col].max()
         return first_day_of_month(last)
 
     def _standardize_dates(self):
         """
         INTERNAL USE:
-        Convert all dates in the configured ```.date_col``` to the first
+        Convert all dates in the configured ``.date_col`` to the first
         of the month, fill in any missing months between the first and
         last months, and sort by date (ascending). Any added dates will
         have values of 0 for the relevant fields.
 
-        Store the results to ```.df``` as a deep copy of the original.
+        Store the results to ``.df`` as a deep copy of the original.
         """
         df = self.df.copy(deep=True)
         df[self.date_col] = df[self.date_col].apply(lambda x: first_day_of_month(x))
@@ -188,7 +188,7 @@ class ProductionAnalyzer:
         aggregating functions.
         :return: A list of field names, and a dict of each field's
          aggregating function (i.e. the values are passable to the
-         ```.agg()``` method in ```pandas```).
+         ``.agg()`` method in ``pandas``).
         """
         fields_source = (
             self.date_col,
@@ -260,7 +260,7 @@ class ProductionAnalyzer:
         Note: This will consider production only for those columns whose
          headers have been specified. That is, specify the header for
          oil to consider production for oil; and likewise for gas. If
-         neither has been specified, this will return ```False``` by
+         neither has been specified, this will return ``False`` by
          definition.
 
         :param row: A DataFrame row containing oil and/or gas
@@ -292,7 +292,7 @@ class ProductionAnalyzer:
         based on the status code(s) in the status column.
 
         If the header for the column containing status codes has not
-        been specified, it will return ```False``` by definition.
+        been specified, it will return ``False`` by definition.
 
         :return: Whether this row meets the criteria for being shut-in.
         """
@@ -358,13 +358,13 @@ class ProductionAnalyzer:
         :param shutin_as_producing: Whether to consider an explicit
          shut-in status code to be "producing".
         :param new_days_col: (Optional) The header to add to the
-         production ```DataFrame``` at ```.prod_df``` for the running
+         production ``DataFrame`` at ``.prod_df`` for the running
          days. If not specified, that data will not be added.
         :param new_months_col: (Optional) The header to add to the
-         production ```DataFrame``` at ```.prod_df``` for the running
+         production ``DataFrame`` at ``.prod_df`` for the running
          months. If not specified, that data will not be added.
-        :return: A ```DataFrame``` showing the ```'total_months'``` and
-         ```'total_days'``` in each gap.
+        :return: A ``DataFrame`` showing the ``'total_months'`` and
+         ``'total_days'`` in each gap.
         """
         df = self.prod_df
 
@@ -462,13 +462,13 @@ class ProductionAnalyzer:
          the oil and/or gas production columns were configured. If those
          were not configured, then this will have no effect.)
         :param new_days_col: (Optional) The header to add to the
-         production ```DataFrame``` at ```.prod_df``` for the running
+         production ``DataFrame`` at ``.prod_df`` for the running
          days. If not specified, that data will not be added.
         :param new_months_col: (Optional) The header to add to the
-         production ```DataFrame``` at ```.prod_df``` for the running
+         production ``DataFrame`` at ``.prod_df`` for the running
          months. If not specified, that data will not be added.
-        :return: A ```DataFrame``` showing the ```'total_months'``` and
-         ```'total_days'``` in each gap.
+        :return: A ``DataFrame`` showing the ``'total_months'`` and
+         ``'total_days'`` in each gap.
         """
         df = self.prod_df
 
@@ -566,7 +566,7 @@ class ProductionAnalyzer:
     ):
         """
         Find the periods during which at least one well is explicitly
-        shut-in. With the optional parameter ```consider_production```,
+        shut-in. With the optional parameter ``consider_production``,
         any oil/gas production that meets the configured threshold will
         render a shut-in status code null (i.e. with sufficient
         production in a given month, that month will not be considered
@@ -584,13 +584,13 @@ class ProductionAnalyzer:
          beyond the configured threshold to override an explicit shut-in
          status code.
         :param new_days_col: (Optional) The header to add to the
-         production ```DataFrame``` at ```.prod_df``` for the running
+         production ``DataFrame`` at ``.prod_df`` for the running
          days. If not specified, that data will not be added.
         :param new_months_col: (Optional) The header to add to the
-         production ```DataFrame``` at ```.prod_df``` for the running
+         production ``DataFrame`` at ``.prod_df`` for the running
          months. If not specified, that data will not be added.
-        :return: A ```DataFrame``` showing the ```'total_months'``` and
-         ```'total_days'``` in each shut-in time period.
+        :return: A ``DataFrame`` showing the ``'total_months'`` and
+         ``'total_days'`` in each shut-in time period.
         """
         if consider_production is None:
             consider_production = self.is_configured_production
@@ -645,12 +645,12 @@ class ProductionAnalyzer:
     def _time_ranges_to_dataframe(time_ranges: list) -> pd.DataFrame:
         """
         INTERNAL USE:
-        Convert a list of start/end dates into a ```DataFrame``` of the
+        Convert a list of start/end dates into a ``DataFrame`` of the
         total number of calendar months and days within each date pair.
-        :param time_ranges: A list of 2 ```datetime``` objects
+        :param time_ranges: A list of 2 ``datetime`` objects
          representing the start and end dates of each time period.
-        :return: A ```DataFrame``` showing the ```'total_months'``` and
-         ```'total_days'``` within each date range.
+        :return: A ``DataFrame`` showing the ``'total_months'`` and
+         ``'total_days'`` within each date range.
         """
         periods = pd.DataFrame({
             "start_date": [x[0] for x in time_ranges],
@@ -672,17 +672,17 @@ class ProductionAnalyzer:
     @staticmethod
     def output_gaps_as_string(gaps_df, header='Gaps:', threshold_days=0) -> str:
         """
-        Clean up the contents of a ```DataFrame``` that was returned by
+        Clean up the contents of a ``DataFrame`` that was returned by
         a returned by a gap-determining method. Output as a single
         string, with the specified header, and limited to those periods
         that are at least as long as the specified number of
-        ```threshold_days```.
-        :param gaps_df: A ```DataFrame``` that was output by a method
+        ``threshold_days``.
+        :param gaps_df: A ``DataFrame`` that was output by a method
          that determines gaps.
         :param header: The header to write before specifying the gaps.
-         (Defaults to ```'Gaps:'```.)
+         (Defaults to ``'Gaps:'``.)
         :param threshold_days: The minimum number of days for a gap to
-         include it in the output string. (Defaults to ```0``` -- i.e.
+         include it in the output string. (Defaults to ``0`` -- i.e.
          report gaps of all sizes.)
         :return: A single string of the gap sizes and dates.
         """
@@ -741,7 +741,7 @@ class ProductionAnalyzer:
          if the oil and/or gas production columns were configured. If
          those were not configured, then this will have no effect.)
         :param threshold_days: The minimum number of days for a gap to
-         highlight it on the graph. (Defaults to ```0``` -- i.e.
+         highlight it on the graph. (Defaults to ``0`` -- i.e.
          highlight gaps of all sizes.)
         :return: None. (Saves graph to the specified filepath.)
         """
@@ -797,14 +797,14 @@ class ProductionAnalyzer:
 
 def first_day_of_month(dt: datetime) -> datetime:
     """
-    Get the date of the first day of the month from the ```datetime```.
+    Get the date of the first day of the month from the ``datetime``.
     """
     return datetime(dt.year, dt.month, 1)
 
 
 def last_day_of_month(dt):
     """
-    Get the date of the last day of the month from the ```datetime```.
+    Get the date of the last day of the month from the ``datetime``.
     """
     last_day = get_days_in_month(dt)
     return datetime(dt.year, dt.month, last_day)
@@ -812,10 +812,10 @@ def last_day_of_month(dt):
 
 def get_days_in_month(dt) -> int:
     """
-    From a ```datetime``` object, get the total number of days in a
+    From a ``datetime`` object, get the total number of days in a
     given calendar month.
 
-    :param dt: A ```datetime``` object.
+    :param dt: A ``datetime`` object.
     :return: The number of days in the month.
     """
     _, last_day = monthrange(dt.year, dt.month)

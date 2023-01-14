@@ -31,26 +31,26 @@ class ReportSection:
         self.style = style
 
     def apply_header(self, s):
-        """Apply configured header formatting to a string ```s```."""
+        """Apply configured header formatting to a string ``s``."""
         return self.style.header_format.format(s)
 
     def apply_subheader(self, s):
-        """Apply configured subheader formatting to a string ```s```."""
+        """Apply configured subheader formatting to a string ``s``."""
         return self.style.subheader_format.format(s)
 
     def apply_footer(self, s) -> str:
-        """Apply configured footer formatting to a string ```s```."""
+        """Apply configured footer formatting to a string ``s``."""
         return self.style.footer_format.format(s)
 
     def apply_date(self, dt) -> str:
-        """Apply configured formatting to a ```datetime```."""
+        """Apply configured formatting to a ``datetime``."""
         return dt.strftime(self.style.date_format)
 
     def join_date_range(self, d1: datetime, d2: datetime) -> str:
         """
-        Convert two ```datetime``` objects to strings (in the format
-        configured in ```.style```) and join them into a single string,
-        delimited as configured in the ```.style```).
+        Convert two ``datetime`` objects to strings (in the format
+        configured in ``.style``) and join them into a single string,
+        delimited as configured in the ``.style``.
         """
         return self.style.date_range_delimiter.join((
             self.apply_date(d1),
@@ -59,10 +59,10 @@ class ReportSection:
 
     def apply_lineitem(self, s1: str, s2: str = None):
         """
-        Apply the ```Style``` formatting to this line item. The input
-        may optionally be in two parts. If so, ```s1``` will be
+        Apply the ``Style`` formatting to this line item. The input
+        may optionally be in two parts. If so, ``s1`` will be
         left-justified (after adding the bullet) according to the
-        configured style, and ```s2``` will be added to the right.
+        configured style, and ``s2`` will be added to the right.
         """
         output_str = self.style.lineitem_bullet_format.format(s1)
         if s2 is not None:
@@ -72,8 +72,8 @@ class ReportSection:
     
     def add_header_and_footer(self, s: str) -> str:
         """
-        If ```.header```, ```.subheader```, and/or ```.footer``` were
-        configured, add them around the string ```s```.
+        If ``.header``, ``.subheader``, and/or ``.footer`` were
+        configured, add them around the string ``s``.
         """
         components = []
         if self.header is not None:

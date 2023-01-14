@@ -23,33 +23,33 @@ JSON files should contain the following fields:
      <whether the production URL will require login credentials>
 }
 
-```prod_url_template``` should be a string to the URL for the production
+``prod_url_template`` should be a string to the URL for the production
 records, with formatting brackets for the portion that will be filled in
 with meaningful data for each unique well.
 
-Correspondingly, ```'prod_url_components'``` is a list of strings that
+Correspondingly, ``'prod_url_components'`` is a list of strings that
 explain what components should go in those brackets.
 
 For example, Colorado uses a URL schema that uses the American Petroleum
-Institute (API) unique number -- e.g., ```'05-001-12345'```.  In this,
-```'001'``` encodes the county, and ```'12345'``` is a unique sequence
+Institute (API) unique number -- e.g., ``'05-001-12345'``.  In this,
+``'001'`` encodes the county, and ``'12345'`` is a unique sequence
 for a specific well within that county.
 
 And to generate the meaningful URL for that well, we would take this
 URL template:
-  ```"https://cogcc.state.co.us/cogisdb/Facility/Production?api_county_code={0}&api_seq_num={1}"```
+  ``"https://cogcc.state.co.us/cogisdb/Facility/Production?api_county_code={0}&api_seq_num={1}"``
 
-... and plug in ```'001'``` and ```'12345'``` respectively, thus:
-  ```"https://cogcc.state.co.us/cogisdb/Facility/Production?api_county_code=001&api_seq_num=12345"```
+... and plug in ``'001'`` and ``'12345'`` respectively, thus:
+  ``"https://cogcc.state.co.us/cogisdb/Facility/Production?api_county_code=001&api_seq_num=12345"``
 
 Thus, these two fields are configured as follows in the JSON file for
 Colorado:
 
-  "prod_url_template": ```"https://cogcc.state.co.us/cogisdb/Facility/Production?api_county_code={0}&api_seq_num={1}"```
+  "prod_url_template": ``"https://cogcc.state.co.us/cogisdb/Facility/Production?api_county_code={0}&api_seq_num={1}"``
   "prod_url_components": ["API county code (3 digits)", "Unique API sequence (5 digits)"],
 
 The user is responsible to provide the actual components. The
-```'prod_url_components'``` field is intended only for reference.
+``'prod_url_components'`` field is intended only for reference.
 
 Moreover, not all states expose such URL's to the public; and even if
 they are exposed, scraping data from them may be against the Terms of
@@ -68,9 +68,9 @@ def load_config_preset(state: str) -> dict:
     Load config data for a preset state.
 
     :param state: The state to be loaded. (By default, takes the
-     2-character abbreviation for each state. If ```CONFIG_DIR``` or
-     ```CONFIG_FILENAME_TEMPLATE``` constants are modified, then
-     ```state``` parameter would follow the custom filename schema.)
+     2-character abbreviation for each state. If ``CONFIG_DIR`` or
+     ``CONFIG_FILENAME_TEMPLATE`` constants are modified, then
+     ``state`` parameter would follow the custom filename schema.)
     :return: Dict containing the config data.
     """
     fp = CONFIG_DIR / CONFIG_FILENAME_TEMPLATE.format(state)

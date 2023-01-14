@@ -12,13 +12,13 @@ class ReportGenerator:
             report_sections: list = None
     ):
         """
-        :param output_fp: (Optional) The filepath to a ```.txt``` file
+        :param output_fp: (Optional) The filepath to a ``.txt`` file
          where this report will be written. (If not specified, this
          object can still be used to generate the report string.)
         :param mode: (Optional) The mode in which to open the output
          file.
         :param report_sections: A list of objects of the
-         ```ReportSection``` class (or any of its child classes), in the
+         ``ReportSection`` class (or any of its child classes), in the
          order in which they should be written to the report.
         """
         self.output_fp = output_fp
