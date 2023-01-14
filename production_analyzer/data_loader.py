@@ -361,7 +361,19 @@ class HTMLLoader:
         :return: A new ```HTMLLoader``` that incorporates the config
          data.
         """
-        return cls(**config, auth=auth)
+        relevant_fields = [
+            'prod_url_template',
+            'date_col',
+            'oil_prod_col',
+            'gas_prod_col',
+            'days_produced_col',
+            'status_col',
+        ]
+        kw = {
+            param: val for param, val in config.items()
+            if param in relevant_fields
+        }
+        return cls(**kw, auth=auth)
 
     @property
     def configured_columns(self):
