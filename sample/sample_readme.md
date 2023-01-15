@@ -27,7 +27,7 @@ It then checks the records for those wells for:
 
 
 The script then generates
-[a text report](sample analysis results/production analysis.txt)
+[a text report](sample%20analysis%20results/production%20analysis.txt)
 that reads as follows (as generated on January 14, 2023):
 
 ```
