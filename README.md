@@ -91,3 +91,46 @@ analyzer = ProductionAnalyzer(
 
 # etc.
 ```
+
+
+## Sample output
+
+Check out the [sample script](sample/sample_readme.md), which generated
+a report that looks like this:
+
+```
+A sample production analysis report.
+
+For records for the following dates:
+ >> First month: 1999-01-01
+ >> Last month: 2021-09-01
+
+Considering the following wells:
+ >> 05-001-07727
+ >> 05-001-08288
+ >> 05-123-08053
+ >> 05-123-09456
+
+Gaps in Production (Shut-in does NOT count as production)
+---- Biggest: 214 days ----
+ >> 2021-03-01 : 2021-09-30
+---- All those that are at least 0 days in length. ----
+ >> 214 days (7 calendar months)   2021-03-01 : 2021-09-30
+
+Gaps in Production (Shut-in DOES count as production)
+---- Biggest: 0 days ----
+ >> n/a
+---- All those that are at least 0 days in length. ----
+ >> None that meet the threshold.
+
+Shut-In Periods
+---- Biggest: 214 days ----
+ >> 2021-03-01 : 2021-09-30
+---- All those that are at least 0 days in length. ----
+ >> 214 days (7 calendar months)   2021-03-01 : 2021-09-30
+```
+
+...and a graph that looks like this, flagging in red the periods during
+which no production occurred in any of the wells:
+
+![gaps_graph](sample/sample analysis results/gaps_graph.png)
