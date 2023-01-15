@@ -469,5 +469,6 @@ class HTMLLoader:
         output = matching_dfs[0]
         if len(matching_dfs) > 1:
             output = pd.concat(matching_dfs, ignore_index=True)
+        output[self.date_col] = pd.to_datetime(output[self.date_col])
         self.dfs.append(output)
         return output
