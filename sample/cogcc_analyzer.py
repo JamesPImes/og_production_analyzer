@@ -135,8 +135,8 @@ materials_reviewed = MaterialsReviewedSection(
 )
 report_sections.append(materials_reviewed)
 
-# The results of each analysis (in this case: production gaps where shut-in was
-# considered producing, and another where it was not considered producing).
+# The results of each analysis we conducted. Note that the analysis_id used
+# for each analysis gets written as a header for each report subsection.
 for analysis_id, results_df in analyzer.results.items():
     date_range_section = DateRangeSection(
         date_range_df=results_df,
