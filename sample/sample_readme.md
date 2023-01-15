@@ -67,4 +67,4 @@ the wells examined, highlighting those periods when no wells were
 producing, regardless of shut-in status (i.e. using the gaps identified
 in analysis #1 above).
 
-![gaps_graph](/sample%20analysis%20results/gaps_graph.png)
+![gaps_graph](sample%20analysis%20results/gaps_graph.png)
