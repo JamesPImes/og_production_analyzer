@@ -133,4 +133,4 @@ Shut-In Periods
 ...and a graph that looks like this, flagging in red the periods during
 which no production occurred in any of the wells:
 
-![gaps_graph](sample/sample analysis results/gaps_graph.png)
+![gaps_graph](sample/sample%20analysis%20results/gaps_graph.png)
