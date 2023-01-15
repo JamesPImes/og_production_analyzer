@@ -46,7 +46,7 @@ os.makedirs(data_dir, exist_ok=True)
 api_nums = ['05-001-07727', '05-001-08288', '05-123-08053', '05-123-09456']
 api_success = {}
 
-for api_num in api_nums:
+for i, api_num in enumerate(api_nums, start=1):
     print(f"Collecting production records for well: {api_num}... ", end='')
     html_fp = data_dir / f"{api_num}_production_data_raw.html"
     csv_fp = data_dir / f"{api_num}_production_data.csv"
@@ -79,8 +79,10 @@ for api_num in api_nums:
         print('No production records. ', end='')
 
     # Be kind to the COGCC's server.
-    print(f"Waiting {SLEEP_SECONDS} seconds.")
-    sleep(SLEEP_SECONDS)
+    if i < len(api_nums):
+        print(f"Waiting {SLEEP_SECONDS} seconds.", end="")
+        sleep(SLEEP_SECONDS)
+    print("")
 
 # Export a single DataFrame with all loaded production data.
 total_prod_df = data_loader.output()
