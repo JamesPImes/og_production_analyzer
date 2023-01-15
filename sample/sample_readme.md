@@ -1,24 +1,25 @@
 
 # Sample Script
 
-This script pulls production records for four wells in Colorado directly
-from the COGCC website -- specifically the wells with these API numbers
-<sup>†</sup>:
+[This script](cogcc_analyzer.py) pulls production records for four oil
+and gas wells in Colorado directly from the COGCC website --
+specifically the wells with these API numbers<sup>†</sup>:
 * 05-001-07727
 * 05-001-08288
 * 05-123-08053
 * 05-123-09456
 
 <sup>†</sup> *Every well has a unique API number. These four were chosen
-arbitrarily.*
+arbitrarily -- but in theory, these might be the four wells that are
+relevant for determining whether a given oil and gas lease has expired.*
 
-It then analyzes the records for those wells for:
+It then checks the records for those wells for:
 
-1. periods when there is no production in any of the wells (and *__not__*
-    considering shut-in wells to be producing). 
+1. periods when there is no reported oil or gas production from any of
+    the wells (and *__not__* considering shut-in wells to be producing). 
 
-2. periods when there is no production in any of the wells (but
-    considering shut-in wells to be producing).
+2. periods when there is no oil or gas production from any of the wells
+    (but considering shut-in wells to be producing, which many leases do).
 
 3. periods when there are no wells producing, but there is at least one
     well shut-in (i.e. still capable of producing, but temporarily
