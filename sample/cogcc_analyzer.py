@@ -115,9 +115,7 @@ print("Generating report... ", end="")
 # Generate and store individual report sections, in the intended order
 # they should appear in the report.
 report_sections = []
-textblock_1 = TextBlockSection(
-    text='A sample report for production analysis.'
-)
+textblock_1 = TextBlockSection(text='A sample production analysis report.')
 report_sections.append(textblock_1)
 
 # Start / end dates of the records we reviewed.
