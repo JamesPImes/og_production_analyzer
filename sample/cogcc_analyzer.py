@@ -37,8 +37,8 @@ data_loader = DataLoader.from_config(config=config)
 html_loader = HTMLLoader.from_config(config=config, auth=None)
 
 # Where we'll save our data.
-analysis_dir = Path(r"./sample analysis")
-data_dir = analysis_dir / "production_data"
+analysis_dir = Path(r"./sample analysis results")
+data_dir = analysis_dir / "production records"
 os.makedirs(data_dir, exist_ok=True)
 
 # The API numbers for the wells we'll include in our research.
@@ -104,6 +104,8 @@ analyzer.gaps_by_production_threshold(
     shutin_as_producing=True,
     analysis_id=yes_shutin_label
 )
+shutin_only_label = 'Shut-In Periods'
+analyzer.periods_of_shutin(analysis_id=shutin_only_label)
 print("Done.")
 
 
