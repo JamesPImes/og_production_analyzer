@@ -59,7 +59,7 @@ to look for any periods of time when there might not be sufficient
 production, during which a lease might have terminated.
 
 
-## Note
+## Configuring by State
 
 Currently, there are preset configurations for use in Colorado, Montana,
 North Dakota, and Wyoming (the states where I do most of my consulting).
