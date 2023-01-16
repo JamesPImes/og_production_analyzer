@@ -1,13 +1,32 @@
 
-"""
-A sample script for loading production data directly from the website
-of the state reporting agency -- in this case, for Colorado (i.e. from
-the COGCC's online records) -- then analyzing that data, and generating
-a sample report and graph.
+r"""
+A command line script for loading production data directly from the
+website of the state reporting agency -- in this case, for Colorado
+(i.e. from the COGCC's online records) -- then analyzing that data, and
+generating a sample report and graph.
+
+To use, run the script at command line, specifying the API numbers for
+the desired wells (separated by comma, with no spaces). Optionally
+specify the directory in which to store the results with the
+``-d <directory>`` argument. If not specified, the results will be
+stored in a new timestamped directory in the current directory.
+
+
+Example (at command line, assuming we are currently in the same
+directory as this script)::
+
+    > py cogcc_analyzer.py 05-001-07727,05-123-09456 -d "C:\land\analysis"
+
+
+For help (at command line)::
+
+    > py cogcc_analyzer.py --help
 """
 
 import os
+import sys
 import argparse
+from datetime import datetime
 from pathlib import Path
 from time import sleep
 
@@ -27,28 +46,50 @@ from production_analyzer.config import load_config_preset
 
 SLEEP_SECONDS = 2
 
-
 # Load preset headers, etc. for Colorado records.  (This pulls
 # relevant pre-configured data from `config\state_configs\co_config.json`.)
 CO_CONFIG = load_config_preset(state='CO')
+DEFAULT_DIRECTORY = '.'
 
 
 if __name__ == '__main__':
-    # Load DataFrames of production data directly from the COGCC website.
+    current_dir = Path(os.path.dirname(sys.argv[0]))
 
-    data_loader = DataLoader.from_config(config=CO_CONFIG)
-    html_loader = HTMLLoader.from_config(config=CO_CONFIG, auth=None)
+    parser = argparse.ArgumentParser(
+        prog="COGCC Production Analyzer",
+        description="Pull records from the COGCC and analyze them for gaps",
+    )
+    parser.add_argument(
+        'api_nums',
+        help=('API Numbers for the desired wells, separated by comma, '
+              'e.g. "05-001-07727,05-123-09456"')
+    )
+    parser.add_argument(
+        '-d',
+        '--directory',
+        default=DEFAULT_DIRECTORY,
+        help="Directory in which to write results",
+    )
+    args = vars(parser.parse_args())
 
     # Where we'll save our data.
-    analysis_dir = Path(r"./sample analysis results")
+    if args['directory'] == DEFAULT_DIRECTORY:
+        subdir = "production_analysis_" + datetime.now().strftime("%Y%m%d_%H%M%S")
+        analysis_dir = Path(DEFAULT_DIRECTORY) / subdir
+    else:
+        analysis_dir = Path(args['directory'])
     data_dir = analysis_dir / "production records"
-    os.makedirs(data_dir, exist_ok=True)
+    os.makedirs(analysis_dir, exist_ok=True)
 
     # The API numbers for the wells we'll include in our research.
-    # (These wells were arbitrarily chosen.)
-    api_nums = ['05-001-07727', '05-001-08288', '05-123-08053', '05-123-09456']
+    api_nums_raw = args['api_nums']
+    api_nums = [raw.strip() for raw in api_nums_raw.split(',')]
     api_success = {}
 
+
+    # Load DataFrames of production data directly from the COGCC website.
+    data_loader = DataLoader.from_config(config=CO_CONFIG)
+    html_loader = HTMLLoader.from_config(config=CO_CONFIG, auth=None)
     for i, api_num in enumerate(api_nums, start=1):
         print(f"Collecting production records for well: {api_num}... ", end='')
         html_fp = data_dir / f"{api_num}_production_data_raw.html"
@@ -93,8 +134,8 @@ if __name__ == '__main__':
     print("All data loaded.")
 
 
-    print("Analyzing... ", end="")
     # Now that all the relevant data has been loaded, begin the analysis...
+    print("Analyzing... ", end="")
     analyzer = ProductionAnalyzer.from_config(total_prod_df, CO_CONFIG)
 
     no_shutin_label = 'Gaps in Production (Shut-in does NOT count as production)'
@@ -118,7 +159,7 @@ if __name__ == '__main__':
     # Generate and store individual report sections, in the intended order
     # they should appear in the report.
     report_sections = []
-    textblock_1 = TextBlockSection(text='A sample production analysis report.')
+    textblock_1 = TextBlockSection(text='A production analysis report.')
     report_sections.append(textblock_1)
 
     # Start / end dates of the records we reviewed.
@@ -129,9 +170,13 @@ if __name__ == '__main__':
     )
     report_sections.append(records_daterange)
 
-    # What records were incorporated into our analysis.
+    # What records were incorporated into our analysis. Specify if there
+    # no records for any given well.
+    materials = [
+        f"{n}{' (no records)' * (not api_success[n])}" for n in api_nums
+    ]
     materials_reviewed = MaterialsReviewedSection(
-        materials=api_nums,
+        materials=materials,
         header='Considering the following wells:',
     )
     report_sections.append(materials_reviewed)
@@ -165,5 +210,5 @@ if __name__ == '__main__':
     print("Done.", end="\n\n")
 
     print(report_text)
-    print("Analysis complete.")
-    input()
+    print("Analysis complete. Results saved to:")
+    print(os.path.abspath(analysis_dir))
