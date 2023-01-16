@@ -2,8 +2,10 @@
 # Sample Script
 
 [This command-line script](cogcc_analyzer.py) pulls production records
-from the COGCC website. The results shown below are generated from the
-following, for the four API numbers<sup>†</sup>, saving the results to
+from Colorado's COGCC website for any number of user-specified wells.
+
+The results shown below are generated as follows -- pulling records for
+the four specified API numbers<sup>†</sup>, and saving the results to
 a directory at `./sample analysis results`:
 
 ```
@@ -15,7 +17,9 @@ py cogcc_analyzer.py 05-001-07727,05-001-07729,05-123-08053,05-123-09456 -d "./s
 but in theory, these might be the four wells that are relevant for
 determining whether a given oil and gas lease has expired.*
 
-The script then checks the records for those wells for:
+
+After downloading the records for all of the requested wells, the script
+checks them for:
 
 1. periods when there is no reported oil or gas production from any of
     the wells (and *__not__* considering shut-in wells to be producing). 
