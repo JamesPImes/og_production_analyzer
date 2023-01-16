@@ -34,7 +34,7 @@ An "oil and gas lease" is a contract between a landowner and an oil company
 that lays out the terms for the company to drill wells on the land, the
 royalties they must pay to the landowner, etc.
 
-A typical lease is negotiated to last a specific period time (e.g., 1 year,
+A typical lease is negotiated to last a specific period of time (e.g., 1 year,
 5 years, whatever gets negotiated) -- __and then to continue indefinitely,
 for as long as oil and/or gas are produced from one or more wells on the
 leased lands.__
