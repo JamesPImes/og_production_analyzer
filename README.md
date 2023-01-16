@@ -100,7 +100,7 @@ Check out the [sample script](sample/sample_readme.md), which generated
 a report that looks like this:
 
 ```
-A sample production analysis report.
+A production analysis report.
 
 For records for the following dates:
  >> First month: 1999-01-01
@@ -108,7 +108,7 @@ For records for the following dates:
 
 Considering the following wells:
  >> 05-001-07727
- >> 05-001-08288
+ >> 05-001-07729 (no records)
  >> 05-123-08053
  >> 05-123-09456
 
@@ -116,6 +116,10 @@ Gaps in Production (Shut-in does NOT count as production)
 ---- Biggest: 214 days ----
  >> 2021-03-01 : 2021-09-30
 ---- All those that are at least 0 days in length. ----
+ >> 61 days (2 calendar months)    2002-05-01 : 2002-06-30
+ >> 30 days (1 calendar months)    2002-09-01 : 2002-09-30
+ >> 29 days (1 calendar months)    2016-02-01 : 2016-02-29
+ >> 30 days (1 calendar months)    2016-06-01 : 2016-06-30
  >> 214 days (7 calendar months)   2021-03-01 : 2021-09-30
 
 Gaps in Production (Shut-in DOES count as production)
@@ -128,10 +132,14 @@ Shut-In Periods
 ---- Biggest: 214 days ----
  >> 2021-03-01 : 2021-09-30
 ---- All those that are at least 0 days in length. ----
+ >> 61 days (2 calendar months)    2002-05-01 : 2002-06-30
+ >> 30 days (1 calendar months)    2002-09-01 : 2002-09-30
+ >> 29 days (1 calendar months)    2016-02-01 : 2016-02-29
+ >> 30 days (1 calendar months)    2016-06-01 : 2016-06-30
  >> 214 days (7 calendar months)   2021-03-01 : 2021-09-30
 ```
 
-...and a graph that looks like this, flagging in red the periods during
-which no production occurred in any of the wells:
+...and a graph that looks like this, highlighting in red the periods
+during which no production occurred in any of the wells:
 
 ![gaps_graph](sample/sample%20analysis%20results/gaps_graph.png)
