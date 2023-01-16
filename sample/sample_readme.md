@@ -1,19 +1,21 @@
 
 # Sample Script
 
-[This script](cogcc_analyzer.py) pulls production records for four oil
-and gas wells in Colorado directly from the COGCC website --
-specifically the wells with these API numbers<sup>†</sup>:
-* 05-001-07727
-* 05-001-08288
-* 05-123-08053
-* 05-123-09456
+[This command-line script](cogcc_analyzer.py) pulls production records
+from the COGCC website. The results shown below are generated from the
+following, for the four API numbers<sup>†</sup>, saving the results to
+a directory at `./sample analysis results`:
 
-<sup>†</sup> *Every well has a unique API number. These four were chosen
-arbitrarily -- but in theory, these might be the four wells that are
-relevant for determining whether a given oil and gas lease has expired.*
+```
+py cogcc_analyzer.py 05-001-07727,05-001-07729,05-123-08053,05-123-09456 -d "./sample analysis results"
+```
 
-It then checks the records for those wells for:
+<sup>†</sup> *Every well has a unique "API number" (e.g.,
+`05-001-07727`). The four API numbers above were chosen arbitrarily --
+but in theory, these might be the four wells that are relevant for
+determining whether a given oil and gas lease has expired.*
+
+The script then checks the records for those wells for:
 
 1. periods when there is no reported oil or gas production from any of
     the wells (and *__not__* considering shut-in wells to be producing). 
@@ -28,10 +30,10 @@ It then checks the records for those wells for:
 
 The script then generates
 [a text report](sample%20analysis%20results/production%20analysis.txt)
-that reads as follows (as generated on January 14, 2023):
+that reads as follows (as generated on January 16, 2023):
 
 ```
-A sample production analysis report.
+A production analysis report.
 
 For records for the following dates:
  >> First month: 1999-01-01
@@ -39,7 +41,7 @@ For records for the following dates:
 
 Considering the following wells:
  >> 05-001-07727
- >> 05-001-08288
+ >> 05-001-07729 (no records)
  >> 05-123-08053
  >> 05-123-09456
 
@@ -47,6 +49,10 @@ Gaps in Production (Shut-in does NOT count as production)
 ---- Biggest: 214 days ----
  >> 2021-03-01 : 2021-09-30
 ---- All those that are at least 0 days in length. ----
+ >> 61 days (2 calendar months)    2002-05-01 : 2002-06-30
+ >> 30 days (1 calendar months)    2002-09-01 : 2002-09-30
+ >> 29 days (1 calendar months)    2016-02-01 : 2016-02-29
+ >> 30 days (1 calendar months)    2016-06-01 : 2016-06-30
  >> 214 days (7 calendar months)   2021-03-01 : 2021-09-30
 
 Gaps in Production (Shut-in DOES count as production)
@@ -59,6 +65,10 @@ Shut-In Periods
 ---- Biggest: 214 days ----
  >> 2021-03-01 : 2021-09-30
 ---- All those that are at least 0 days in length. ----
+ >> 61 days (2 calendar months)    2002-05-01 : 2002-06-30
+ >> 30 days (1 calendar months)    2002-09-01 : 2002-09-30
+ >> 29 days (1 calendar months)    2016-02-01 : 2016-02-29
+ >> 30 days (1 calendar months)    2016-06-01 : 2016-06-30
  >> 214 days (7 calendar months)   2021-03-01 : 2021-09-30
 ```
 
