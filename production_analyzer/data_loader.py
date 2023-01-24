@@ -411,8 +411,11 @@ class HTMLLoader:
 
     def save_html(self, txt, fp):
         """
-        Save the HTML to the specified filename (if ``.save_html_dir``
-        has been configured).
+        Save the HTML (``txt``) to the specified filepath (``fp``).
+
+        .. warning::
+
+            This will overwrite any file at ``fp`` without warning.
         """
         fp = Path(fp)
         os.makedirs(fp.parent, exist_ok=True)
@@ -423,7 +426,12 @@ class HTMLLoader:
 
     def save_csv(self, df, fp) -> None:
         """
-        Save the production ``DataFrame`` to .csv.
+        Save the production ``DataFrame`` (``df``) to .csv at the
+        specified filepath ``fp``.
+
+        .. warning::
+
+            This will overwrite any file at ``fp`` without warning.
         """
         fp = Path(fp)
         os.makedirs(fp.parent, exist_ok=True)
