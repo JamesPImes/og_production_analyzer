@@ -6,6 +6,7 @@ Helper classes for loading production data from various sources (.csv,
 
 import os
 from pathlib import Path
+from io import StringIO
 
 import pandas as pd
 import requests
@@ -467,7 +468,7 @@ class HTMLLoader:
         """
         matching_dfs = []
         target_cols = set(self.configured_columns)
-        dfs = pd.read_html(html)
+        dfs = pd.read_html(StringIO(html))
         for df in dfs:
             df_cols = set(df.columns)
             if target_cols.issubset(df_cols):
