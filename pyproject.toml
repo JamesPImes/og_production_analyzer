@@ -3,7 +3,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-version = "0.2.2"
+version = "0.2.3"
 dependencies = [
     "pandas",
     "matplotlib",
