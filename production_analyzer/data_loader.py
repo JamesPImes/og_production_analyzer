@@ -475,9 +475,9 @@ class HTMLLoader:
                 matching_dfs.append(df)
         if not matching_dfs:
             return None
-        output = matching_dfs[0]
-        if len(matching_dfs) > 1:
-            output = pd.concat(matching_dfs, ignore_index=True)
+        # Taking the final dataframe should work for most states. If we
+        # encounter issues with this approach, will address at that time.
+        output = matching_dfs[-1]
         output[self.date_col] = pd.to_datetime(output[self.date_col])
         self.dfs.append(output)
         return output
