@@ -6,6 +6,7 @@
   "gas_prod_col": "Gas Produced",
   "days_produced_col": "Days Produced",
   "status_col": "Well Status",
+  "formation_col": "Formation",
   "shutin_codes": ["SI"],
   "url": "https://cogcc.state.co.us/",
   "prod_url_template": "https://cogcc.state.co.us/cogisdb/Facility/Production?api_county_code={0}&api_seq_num={1}",

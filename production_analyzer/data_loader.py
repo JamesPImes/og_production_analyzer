@@ -26,6 +26,7 @@ class DataLoader:
             gas_prod_col: str = None,
             days_produced_col: str = None,
             status_col: str = None,
+            formation_col: str = None,
     ):
         """
         Load production data from one or more .csv or .xlsx files, or
@@ -41,6 +42,7 @@ class DataLoader:
         self.gas_prod_col = gas_prod_col
         self.days_produced_col = days_produced_col
         self.status_col = status_col
+        self.formation_col = formation_col
         self.dfs = []
         self.files_saved = []
 
@@ -60,6 +62,7 @@ class DataLoader:
             'gas_prod_col',
             'days_produced_col',
             'status_col',
+            'formation_col',
         ]
         kw = {
             param: val for param, val in config.items()
@@ -79,6 +82,7 @@ class DataLoader:
             self.gas_prod_col,
             self.days_produced_col,
             self.status_col,
+            self.formation_col,
         ]
         return [col for col in possible if col is not None]
 
@@ -295,6 +299,7 @@ class HTMLLoader:
             gas_prod_col: str = None,
             days_produced_col: str = None,
             status_col: str = None,
+            formation_col: str = None,
             auth=None,
     ):
         """
@@ -335,6 +340,8 @@ class HTMLLoader:
          days that the well produced during this month.
         :param status_col: (Optional) The header for the column
          containing status codes.
+        :param formation_col: (Optional) The header for the column
+         containing the name of the producing formation.
         :param auth: (Optional) If needed, provide the appropriate
          ``requests.auth`` object for this state's website, such as:
          ``requests.auth.HTTPBasicAuth('user_name', 'password')``.
@@ -345,6 +352,7 @@ class HTMLLoader:
         self.gas_prod_col = gas_prod_col
         self.days_produced_col = days_produced_col
         self.status_col = status_col
+        self.formation_col = formation_col
         self.auth = auth
         self.dfs = []
         self.files_saved = []
@@ -369,6 +377,7 @@ class HTMLLoader:
             'gas_prod_col',
             'days_produced_col',
             'status_col',
+            'formation_col',
         ]
         kw = {
             param: val for param, val in config.items()
@@ -388,6 +397,7 @@ class HTMLLoader:
             self.gas_prod_col,
             self.days_produced_col,
             self.status_col,
+            self.formation_col,
         ]
         return [col for col in possible if col is not None]
 

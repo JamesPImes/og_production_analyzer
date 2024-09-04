@@ -5,6 +5,7 @@
   "oil_prod_col": "BBLS Oil",
   "gas_prod_col": "MCF Prod",
   "days_produced_col": "Days",
+  "formation_col": "Pool",
   "status_col": null,
   "shutin_codes": null,
   "url": "https://www.dmr.nd.gov/oilgas/",
